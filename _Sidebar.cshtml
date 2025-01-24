@@ -1,0 +1,41 @@
+﻿@{
+    var userId = Context.Session.GetString("userId");
+    var userType = Context.Session.GetString("userType");
+}
+
+<div class="sidebar">
+    <ul class="nav flex-column">
+        <li class="nav-item mt-5 mb-5 text-center">
+            <a class="nav-link text-secondary fw-semibold" href="#">
+                <img src="/images/logo.png" width="100px">
+            </a>
+        </li>
+        <li class="nav-item">
+            @if (@userType == "3")
+            {
+                <a class="nav-link text-secondary fw-semibold" href="/Admin/Employees"><i class="fas fa-users"></i> Employees</a>
+                <a class="nav-link text-secondary fw-semibold" href="/Admin/Services"><i class="fas fa-cog"></i> Services</a>
+            }
+
+            @if (@userType == "2")
+            {
+                <a class="nav-link text-secondary fw-semibold" href="/Admin/DentistSchedule"><i class="fas fa-calendar"></i> Dentist Schedule</a>
+                <a class="nav-link text-secondary fw-semibold" href="/Admin/PatientSchedule"><i class="fas fa-calendar"></i> Patient Schedule</a>
+            }
+
+            @if (@userType == "1")
+            {
+                <a class="nav-link text-secondary fw-semibold" href="/Admin/PatientSchedule"><i class="fas fa-calendar"></i> Patient Schedule</a>
+            }
+
+            <a class="nav-link text-secondary fw-semibold" href="/Admin/Profile"><i class="fas fa-user"></i> Profile</a>
+            </li>
+        </ul>
+
+        <!-- Logout at the bottom -->
+        <ul class="nav flex-column mt-auto">
+            <li class="nav-item">
+                <a class="nav-link text-secondary fw-semibold" href="@Url.Action("Logout", "Account")"><i class="fas fa-sign-out"></i> Logout</a>
+            </li>
+        </ul>
+    </div>
