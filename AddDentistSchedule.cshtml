@@ -1,0 +1,96 @@
+﻿@{
+    Layout = "_Layout";
+}
+@model DentistScheduleModel
+@{
+    var accountList = ViewData["AccountList"] as List<Appointment.Models.AccountModel>;
+
+}
+@{
+    var servicesList = ViewData["ServicesList"] as List<Appointment.Models.ServicesModel>;
+
+}
+
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.1/css/dataTables.bootstrap5.css" />
+<div class="wrapper">
+    @Html.Partial("~/Views/Shared/_Sidebar.cshtml")
+
+    <div class="container-fluid bg-light" style="height: 100vh;">
+
+
+        <form asp-action="AddDentistSchedule" method="POST">
+            <input type="hidden" name="Id" value="@Model?.Id.ToString()" />
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-lg-12 mt-3">
+                            <label>Dentist Name</label>
+                            <div class="form-group has-feedback form-control" style="height: 45px;position: relative;">
+                                <select name="users_id" id="UsersId" style="width: 100%; height: 100%; border: unset; box-shadow: none; outline-style: none;" required>
+                                    @if (@Model?.Id != null)
+                                    {
+                                        // First render the option where the Id matches Model.UsersId
+                                        var selectedAccount = accountList.FirstOrDefault(a => a.Id.ToString() == Model.UsersId);
+                                        if (selectedAccount != null)
+                                        {
+                                            <option value="@selectedAccount.Id" selected>
+                                                @selectedAccount.FirstName @selectedAccount.LastName
+                                            </option>
+                                        }
+
+                                        // Render the rest of the options
+                                        foreach (var account in accountList)
+                                        {
+                                            if (account.Id.ToString() != Model.UsersId)
+                                            {
+                                                <option value="@account.Id">
+                                                    @account.FirstName @account.LastName
+                                                </option>
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+
+                                        foreach (var account in accountList)
+                                        {
+                                            <option value="@account.Id">@account.FirstName @account.LastName</option>
+                                        }
+                                    }
+                                </select>
+
+
+                            </div>
+                        </div>
+                        <div class="col-lg-12 mt-3">
+                            <label>Date Available</label>
+                            <div class="form-group has-feedback form-control" style="height: 45px;position: relative;">
+                                <input type="date" name="date_available" id="DateAvailable"
+                                       value="@(DateTime.TryParse(Model?.DateAvailable, out var date) ? date.ToString("yyyy-MM-dd") : "")"
+                                       style="width: 100%;height: 100%;border: unset;box-shadow: none;outline-style: none;" required>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 mt-3">
+                            <label>Start Time</label>
+                            <div class="form-group has-feedback form-control" style="height: 45px;position: relative;">
+                                <input type="time" name="start_time" id="StartTime" value="@Model?.StartTime" style="width: 100%;height: 100%;border: unset;box-shadow: none;outline-style: none;" required>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 mt-3">
+                            <label>End Time</label>
+                            <div class="form-group has-feedback form-control" style="height: 45px;position: relative;">
+                                <input type="time" name="end_time" id="EndTime" value="@Model?.EndTime" style="width: 100%;height: 100%;border: unset;box-shadow: none;outline-style: none;" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-xs-12">
+                    <button type="submit" class="btn btn-block btn-flat" style="background: #00bf63; color: #fff; border: unset;height: 45px;font-size: 23px;" name="register">Save</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,69 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.1/css/dataTables.bootstrap5.css" />
+<div class="wrapper">
+    @Html.Partial("~/Views/Shared/_Sidebar.cshtml")
+
+    <div class="container-fluid p-5 bg-light" style="height: 100vh;">
+        @{
+            var patientmedicalhistoryList = ViewData["PatientMedicalHistoryList"] as List<Appointment.Models.PatientMedicalHistoryModel>;
+        }
+                <h3>Medical History</h3>
+                <br />
+
+                @if (patientmedicalhistoryList != null && patientmedicalhistoryList.Any())
+                {
+                    foreach (var patientmedicalhistory in patientmedicalhistoryList)
+                    {
+                        if(patientmedicalhistory.Id == Model.Id) {
+                    <div class="form-group">
+                        <label class="fw-bold">Do you have any ongoing medical conditions, such as diabetes, heart disease, or high blood pressure?</label><br />
+                        <small class="fw-bold">(These conditions may impact oral health or influence treatment plans.)</small>
+                        <p>Answer: @patientmedicalhistory.QOne</p>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <label class="fw-bold">Are you currently taking any medications, including prescriptions, over-the-counter drugs, or supplements?</label><br />
+                        <small class="fw-bold">(Certain medications can affect oral health, such as causing dry mouth or increasing bleeding risks.)</small>
+                        <p>Answer: @patientmedicalhistory.QOne</p>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <label class="fw-bold">Do you have any allergies, especially to medications, latex, or anesthetics?</label><br />
+                        <small class="fw-bold">(This ensures patient safety during treatment.)</small>
+                        <p>Answer: @patientmedicalhistory.QOne</p>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <label class="fw-bold">Have you ever had any surgeries or hospitalizations? If yes, could you briefly explain?</label><br />
+                        <small class="fw-bold">(This helps the dentist understand any past medical procedures that may impact dental care.)</small>
+                        <p>Answer: @patientmedicalhistory.QOne</p>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <label class="fw-bold">Do you have a history of smoking, alcohol use, or recreational drug use?</label><br />
+                        <small class="fw-bold">(These habits can significantly affect oral health and healing after procedures.)</small>
+                        <p>Answer: @patientmedicalhistory.QOne</p>
+                    </div>
+                        }
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4">No data available.</td>
+                    </tr>
+                }
+
+    </div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="https://cdn.datatables.net/2.2.1/js/dataTables.js"></script>
+<script src="https://cdn.datatables.net/2.2.1/js/dataTables.bootstrap5.js"></script>
+<script>
+    new DataTable('#example');
+</script>

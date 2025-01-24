@@ -1,0 +1,15 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+
+<p>Dashboard</p>
+
+@{
+    var userId = Context.Session.GetString("userId");
+    var userType = Context.Session.GetString("userType");
+}
+
+
+  <p>Welcome, User ID: @userId (Type: @userType)</p>
+

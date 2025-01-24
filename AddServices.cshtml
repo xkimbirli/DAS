@@ -1,0 +1,48 @@
+﻿@{
+    Layout = "_Layout";
+}
+@model ServicesModel
+
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.1/css/dataTables.bootstrap5.css" />
+<div class="wrapper">
+    @Html.Partial("~/Views/Shared/_Sidebar.cshtml")
+
+    <div class="container-fluid bg-light" style="height: 100vh;">
+
+
+        <form asp-action="AddServices" method="POST">
+
+            <input type="hidden" name="Id" value="@Model?.Id.ToString()" />
+
+
+            <div class="row">
+                <div class="col-lg-4 mt-3">
+                    <div class="form-group has-feedback form-control" style="height: 45px;position: relative;">
+                        <input type="text" name="title" id="Title" value="@Model?.Title" placeholder="Title" style="width: 100%;height: 100%;border: unset;box-shadow: none;outline-style: none;" required>
+
+
+                        <span class="fa fa-user form-control-feedback" style="top: 50%;transform: translateY(-50%);position:absolute;right: 10px;"></span>
+                    </div>
+                </div>
+                <div class="col-lg-4 mt-3">
+                    <div class="form-group has-feedback form-control" style="height: 45px;position: relative;">
+                        <input type="text" name="description" id="Description" value="@Model?.Description" placeholder="Description" style="width: 100%;height: 100%;border: unset;box-shadow: none;outline-style: none;" required>
+                        <span class="fa fa-user form-control-feedback" style="top: 50%;transform: translateY(-50%);position:absolute;right: 10px;"></span>
+                    </div>
+                </div>
+                <div class="col-lg-4 mt-3">
+                    <div class="form-group has-feedback form-control" style="height: 45px;position: relative;">
+                        <input type="text" name="hours" id="Hours" value="@Model?.Hours" placeholder="Hours" style="width: 100%;height: 100%;border: unset;box-shadow: none;outline-style: none;" required>
+                        <span class="fa fa-number form-control-feedback" style="top: 50%;transform: translateY(-50%);position:absolute;right: 10px;"></span>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-xs-12">
+                    <button type="submit" class="btn btn-block btn-flat" style="background: #00bf63; color: #fff; border: unset;height: 45px;font-size: 23px;" name="register">Save</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
