@@ -1,0 +1,161 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+<link rel="stylesheet" href="https://cdn.datatables.net/2.2.1/css/dataTables.bootstrap5.css" />
+
+@{
+    var userId = Context.Session.GetString("userId");
+    var userType = Context.Session.GetString("userType");
+}
+
+<div class="container-fluid p-0 m-0 ">
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-transparent mb-3">
+        <div class="container-fluid">
+            <div class="navbar-collapse collapse d-flex justify-content-end">
+                <div>
+                    <a class="btn btn-primary" href="/">HOME</a>
+                </div>
+                <div class="m-3">
+                    <a class="btn btn-primary" href="/Home/AddAppointment">BOOK APPOINTMENT</a>
+                </div>
+                <div class="me-3">
+                    <a class="btn btn-primary" href="/Home/BookedAppointment">BOOKED APPOINTMENT</a>
+                </div>
+                <div class="me-3">
+                    <a class="btn btn-primary" href="/Home/Profile">PROFILE</a>
+                </div>
+                <div>
+                    <a class="btn btn-primary" href="@Url.Action("Logout", "Account")">LOGOUT</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+        @{
+            var patientscheduleList = ViewData["PatientScheduleList"] as List<Appointment.Models.PatientScheduleModel>;
+            var dentistservicesList = ViewData["DentistServicesList"] as List<Appointment.Models.DentistServicesModel>;
+        }
+    <div class="container pt-5">
+        <table id="example" class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Dentist Name</th>
+                    <th>Services</th>
+                    <th>Date</th>
+                    <th>Time</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @functions {
+                    public int GetTotalHours(string ServicesIds, List<Appointment.Models.DentistServicesModel> dentistservicesList)
+                    {
+                        // Split the ServicesId into an array
+                        var ServicesIdsArray = ServicesIds.Split(',').Select(id => id.Trim()).ToArray();
+
+                        // Find the matching services in DentistServicesList
+                        var matchingDentistSchedules = dentistservicesList
+                        .Where(d => ServicesIdsArray.Contains(d.Id.ToString()))
+                        .ToList();
+
+                        // Sum the hours for each matching service
+                        int totalHours = 0;
+                        foreach (var service in matchingDentistSchedules)
+                        {
+                            if (int.TryParse(service.Hours, out int hours))
+                            {
+                                totalHours += hours; // Add hours for each service
+                            }
+                        }
+
+                        return totalHours;
+                    }
+                }
+
+                @if (patientscheduleList != null && patientscheduleList.Any())
+                {
+                    foreach (var patientschedule in patientscheduleList)
+                    {
+
+                        if (@userId == patientschedule.UsersId) { 
+                        // Split ServicesId into an array
+                        var serviceIds = patientschedule.ServicesId.Split(',');
+
+                        // Initialize lists to hold the service titles and hours
+                        List<string> serviceTitles = new List<string>();
+                        int totalServiceHours = 0; // Variable to hold the sum of hours
+
+                        // Loop through each serviceId and find the corresponding title and hours
+                        foreach (var serviceId in serviceIds)
+                        {
+                            var matchingService = dentistservicesList.FirstOrDefault(ds => ds.Id.ToString() == serviceId);
+                            if (matchingService != null)
+                            {
+                                // Add the service title
+                                serviceTitles.Add(matchingService.Title);
+
+                                // Try to parse the hours and add to the total if valid
+                                if (int.TryParse(matchingService.Hours, out int hours))
+                                {
+                                    totalServiceHours += hours;
+                                }
+                                else
+                                {
+                                    // Handle invalid hour value if necessary (e.g., log it or add default value)
+                                    totalServiceHours += 0; // Or you can display an error message
+                                }
+                            }
+                        }
+
+                        // Join the service titles for display
+                        var services = string.Join(", ", serviceTitles);
+
+                        <tr>
+                            <td>@patientschedule.FirstName @patientschedule.LastName</td>
+                            <td>@services</td>
+                            <td>@patientschedule.DateAvailable</td>
+                            <td>
+                                @if (DateTime.TryParse(patientschedule.AppointmentTime, out DateTime appointmentTime))
+                                {
+                                    // Add the total service hours to the appointment start time to get the end time
+                                    var endTime = appointmentTime.AddHours(totalServiceHours);
+
+                                    // Format the start and end times for display
+                                    var startTime = appointmentTime.ToString("h:mm tt");
+                                    var endTimeFormatted = endTime.ToString("h:mm tt");
+
+                                    // Display the time range
+                                    <div>@startTime - @endTimeFormatted</div>
+                                }
+                                else
+                                {
+                                    <span>Invalid Appointment Time</span>
+                                }
+                            </td>
+
+                        </tr>
+
+                        }
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4">No data available.</td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+
+    </div>
+    </div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="https://cdn.datatables.net/2.2.1/js/dataTables.js"></script>
+<script src="https://cdn.datatables.net/2.2.1/js/dataTables.bootstrap5.js"></script>
+<script>
+    new DataTable('#example');
+</script>
