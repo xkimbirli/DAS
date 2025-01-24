@@ -1,0 +1,311 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@{
+    var dentistservicesList = ViewData["DentistServicesList"] as List<Appointment.Models.DentistServicesModel>;
+}
+@{
+    var dentistscheduleList = ViewData["DentistScheduleList"] as List<Appointment.Models.DentistScheduleModel>;
+}
+
+@{
+    var patientscheduleList = ViewData["PatientScheduleList"] as List<Appointment.Models.PatientScheduleModel>;
+}
+
+
+@model DentistServicesModel
+
+@{
+    var userId = Context.Session.GetString("userId");
+    var userType = Context.Session.GetString("userType");
+}
+@{
+    var qone = Context.Session.GetString("qone");
+    var qtwo = Context.Session.GetString("qtwo");
+    var qthree = Context.Session.GetString("qthree");
+    var qfour = Context.Session.GetString("qfour");
+    var qfive = Context.Session.GetString("qfive");
+}
+<style>
+    .service-card {
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+    }
+
+    .service-card.selected {
+    border: 2px solid blue;
+    }
+</style>
+
+<div class="container-fluid p-0 m-0 ">
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-transparent mb-3">
+        <div class="container-fluid">
+            <div class="navbar-collapse collapse d-flex justify-content-end">
+                <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-transparent mb-3">
+                    <div class="container-fluid">
+                        <div class="navbar-collapse collapse d-flex justify-content-end">
+                            <div>
+                                <a class="btn btn-primary" href="/">HOME</a>
+                            </div>
+                            <div class="m-3">
+                                <a class="btn btn-primary" href="/Home/MedicalHistory">BOOK APPOINTMENT</a>
+                            </div>
+                            <div class="me-3">
+                                <a class="btn btn-primary" href="/Home/BookedAppointment">BOOKED APPOINTMENT</a>
+                            </div>
+                            <div class="me-3">
+                                <a class="btn btn-primary" href="/Home/Profile">PROFILE</a>
+                            </div>
+                            <div>
+                                <a class="btn btn-primary" href="@Url.Action("Logout", "Account")">LOGOUT</a>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <form asp-action="AddAppointment" method="POST">
+
+
+          
+            <input type="hidden" name="qone" value="@qone" />
+            <input type="hidden" name="qtwo" value="@qtwo" />
+            <input type="hidden" name="qthree" value="@qthree" />
+            <input type="hidden" name="qfour" value="@qfour" />
+            <input type="hidden" name="qfive" value="@qfive" />
+
+
+            <input type="hidden" name="users_id" id="userId" value="@userId" />
+            <input type="hidden" name="dentist_id" id="DentistId" value="@Model?.UsersId" />
+            <div class="bg-white p-5">
+                <br />
+
+                <div class="row">
+
+                    @if (dentistscheduleList != null && dentistscheduleList.Any())
+                    {
+                        <h3>Select Dentist</h3>
+                        foreach (var dentistschedule in dentistscheduleList)
+                        {
+
+
+                            var timeZone = TimeZoneInfo.FindSystemTimeZoneById("Asia/Manila");
+                            var StartTime = DateTime.Parse(dentistschedule.StartTime);
+                            var phtStartTime = TimeZoneInfo.ConvertTime(StartTime, timeZone);
+                            var start_time = phtStartTime.ToString("hh:mm tt");
+
+                            var EndTime = DateTime.Parse(dentistschedule.EndTime);
+                            var phtEndTime = TimeZoneInfo.ConvertTime(EndTime, timeZone);
+                            var end_time = phtEndTime.ToString("hh:mm tt");
+
+                            <div class="col-lg-3 mt-3">
+                                <div class="card shadow">
+                                    <a href="/Home/AddAppointment/@dentistschedule.UsersId" class="text-decoration-none text-dark">
+                                        <div class="card-body schedule-card">
+                                            <h3>Dentist: @dentistschedule.FirstName @dentistschedule.LastName</h3>
+                                            <h5>Date: @dentistschedule.DateAvailable</h5>
+                                            <p>Availability: @start_time - @end_time</p>
+
+                                            @if (dentistservicesList != null && dentistservicesList.Any())
+                                            {
+                                                <h2>List Services</h2>
+                                                <ul>
+                                                @foreach (var dentistservices in dentistservicesList)
+                                                {
+                                                    if (@dentistschedule?.UsersId == dentistservices.UsersId)
+                                                    {
+
+                                                         <li>
+                                                            <h5>@dentistservices.Title</h5>
+                                                         </li>
+                                                    }
+                                                }
+                                                </ul>
+                                            }
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+
+                        }
+                    }
+                </div>
+                <input type="hidden" id="SelectedServices" class="SelectedServices" name="services_id" />
+                <div class="row">
+                    @if (@Model?.UsersId != null)
+                {
+                    <h2>Select Services</h2>
+                }
+                    @if (dentistservicesList != null && dentistservicesList.Any())
+                    {
+                        foreach (var dentistservices in dentistservicesList)
+                        { 
+                            if (@Model?.UsersId == dentistservices.UsersId)
+                            {
+
+                                <div class="col-lg-3 mt-3">
+                                    <div class="card shadow service-card" data-id="@dentistservices.Id">
+                                        <input type="checkbox" class="service-checkbox" value="@dentistservices.Id" style="display: none;" />
+                                        <div class="card-body">
+                                            <h3>@dentistservices.Title</h3>
+                                            <p>@dentistservices.Description</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    }
+                </div>
+                @if (@Model?.UsersId != null)
+                {
+
+
+               
+                    <div class="row">
+
+                        <div class="col-lg-12 mt-3">
+                            <label for="appointment_time" class="fw-bold">Appointment Time:</label>
+                            <select name="appointment_time" id="AppointmentTime" class="form-control appointment_time" required>
+                                <option value="">Select Time</option>
+
+                                @if (patientscheduleList != null && patientscheduleList.Any())
+                                {
+                                    // Create a HashSet to store existing appointment times for faster lookup
+                                    var scheduledTimes = new HashSet<string>(patientscheduleList.Select(p => p.AppointmentTime));
+                                    var scheduledDentistId = new HashSet<string>(patientscheduleList.Select(p => p.DentistId));
+
+                                    // List of all possible appointment times
+                                    var allTimes = new List<string>
+                            {
+                            "8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM",
+                            "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM"
+                            };
+
+                                    // Loop through each time and check if it is already scheduled
+                                    foreach (var time in allTimes )
+                                    {
+                                        if (scheduledDentistId.Contains(Model.UsersId))
+                                        {
+                                        if (!scheduledTimes.Contains(time))
+                                        {
+                                              <option value="@time">@time</option>
+                                            
+                                        }
+                                        }
+                                        else
+                                        {
+                                            <option value="@time">@time</option>
+                                        }
+                                    }
+
+                                }
+                                else
+                                {
+                                    // If no patientscheduleList, display all times
+                                    <option value="8:00 AM">8:00 AM</option>
+                                    <option value="9:00 AM">9:00 AM</option>
+                                    <option value="10:00 AM">10:00 AM</option>
+                                    <option value="11:00 AM">11:00 AM</option>
+                                    <option value="12:00 PM">12:00 PM</option>
+                                    <option value="1:00 PM">1:00 PM</option>
+                                    <option value="2:00 PM">2:00 PM</option>
+                                    <option value="3:00 PM">3:00 PM</option>
+                                    <option value="4:00 PM">4:00 PM</option>
+                                    <option value="5:00 PM">5:00 PM</option>
+                                }
+                            </select>
+
+                        </div>
+                    </div>
+                }
+
+                
+            </div>
+            @if (@Model?.UsersId != null)
+            {
+                <button type="submit" class="btn btn-block btn-flat setappointment" style="background: #00bf63; color: #fff; border: unset;height: 45px;font-size: 23px;" name="appointment" disabled>Set Appointment</button>
+            }
+        </form>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+        $(document).ready(function() {
+        $('.schedule-card').on('click', function() {
+            // Remove the highlight from all cards
+            $('.schedule-card').css('border', '2px solid transparent');
+
+            // Add a blue border to the selected card
+            $(this).css('border', '2px solid #0d6efd');
+
+            // Uncheck all radio buttons
+            $('input[type="radio"]').prop('checked', false);
+
+            // Check the radio button inside the clicked card
+            $(this).find('input[type="radio"]').prop('checked', true);
+
+            // Update the hidden input field with the selected dentist_schedule_id
+            var selectedScheduleId = $(this).find('input[type="radio"]').val();
+            $('#DentistScheduleId').val(selectedScheduleId); // Ensure this updates the hidden input
+
+
+           
+        });
+    });
+    
+
+  
+    
+    
+    
+
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const cards = document.querySelectorAll('.service-card');
+        const checkboxes = document.querySelectorAll('.service-checkbox');
+        const selectedServicesInput = document.getElementById('SelectedServices');
+
+        // Function to update the #SelectedServices input value
+        const updateSelectedServices = () => {
+            const selectedValues = Array.from(checkboxes)
+                .filter(cb => cb.checked)
+                .map(cb => cb.value);
+
+            selectedServicesInput.value = selectedValues.join(',');
+        };
+
+        // Add click event listeners to cards
+        cards.forEach(card => {
+            card.addEventListener('click', () => {
+                const checkbox = card.querySelector('.service-checkbox');
+                checkbox.checked = !checkbox.checked;
+
+                // Toggle the 'selected' class based on checkbox state
+                if (checkbox.checked) {
+                    card.classList.add('selected');
+                } else {
+                    card.classList.remove('selected');
+                }
+
+                // Update the input field with selected IDs
+                updateSelectedServices();
+
+                          if($('.SelectedServices').val() == ""){
+        $('.setappointment').attr('disabled', true)
+    } else {
+        $('.setappointment').attr('disabled', false)
+    }
+            });
+        });
+
+        // Add change event listeners to checkboxes for manual changes
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', updateSelectedServices);
+        });
+    });
+</script>
