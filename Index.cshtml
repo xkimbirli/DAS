@@ -1,0 +1,203 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@{
+    var userId = Context.Session.GetString("userId");
+    var userType = Context.Session.GetString("userType");
+}
+<div class="container-fluid p-0 m-0 text-center first-screen">
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-transparent mb-3">
+        <div class="container-fluid">
+            <div class="navbar-collapse collapse d-flex justify-content-end">
+                @if (userId != null)
+                {
+                    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-transparent mb-3">
+                        <div class="container-fluid">
+                            <div class="navbar-collapse collapse d-flex justify-content-end">
+                                <div>
+                                    <a class="btn btn-primary" href="/">HOME</a>
+                                </div>
+                                <div class="m-3">
+                                    <a class="btn btn-primary" href="/Home/MedicalHistory">BOOK APPOINTMENT</a>
+                                </div>
+                                <div class="me-3">
+                                    <a class="btn btn-primary" href="/Home/BookedAppointment">BOOKED APPOINTMENT</a>
+                                </div>
+                                <div class="me-3">
+                                    <a class="btn btn-primary" href="/Home/Profile">PROFILE</a>
+                                </div>
+                                <div>
+                                    <a class="btn btn-primary" href="@Url.Action("Logout", "Account")">LOGOUT</a>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+                }
+                else
+                {
+                    <a class="btn btn-primary" href="/Account/login">BOOK APPOINTMENT</a>
+                }
+
+            </div>
+        </div>
+    </nav>
+    <div class="first-screen-content">
+        <h1 class="display-4 fw-bold text-primary">Bytes Of Innovation,<br /> Smiles Of Perfection</h1>
+    </div>
+</div>
+<div class="container text-center second-screen">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="card bg-primary p-3 rounded-0 shadow">
+                <div class="card-body">
+                    <div class="text-center">
+                        <h3 class="text-white">Give us a call</h3>
+                        <h2 class="text-white">+800-123-5678</h2>
+                    </div>
+                    <div class="text-start text-white">
+                        John Doe, 123 Main Street, Anytown, CA 12345: A mailing address
+                    </div>
+                    <div class="text-start text-white">
+                        <button class="btn btn-outline-light btn-lg text-white px-5">CONTACT US</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card bg-white p-2 rounded-0 shadow">
+                <div class="card-body">
+                    <div class="text-start">
+                        <h4 class="text-dark mt-0">Opening hours</h4>
+                    </div>
+                    <div class="text-start text-dark d-flex justify-content-between">
+                        <span>Monday - Friday</span> <span>08:00 AM - 09:00 PM</span>
+                    </div>
+                    <hr>
+                    <div class="text-start text-dark d-flex justify-content-between">
+                        <span>Sunday</span> <span>08:00 AM - 09:00 PM</span>
+                    </div>
+                    <hr>
+                    <div class="text-start text-dark d-flex justify-content-between">
+                        <span>Sunday</span> <span>08:00 AM - 09:00 PM</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container text-center">
+    <div class="card bg-white p-2 rounded-0 border-0">
+        <div class="card-body">
+            <div class="text-start">
+                <h5 class="text-dark mt-0">WHO WE ARE</h5>
+                <h2 class="text-dark mt-0">SmileByte Dental</h2>
+            </div>
+            <div class="text-start text-dark d-flex justify-content-between">
+                <span>
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                </span>
+            </div>
+            <div class="text-start mt-2">
+                <h3 class="text-dark">25 YEARS</h3>
+                <span class="text-dark">SmileByte Dental</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container-fluid m-0 p-5 text-center bg-primary">
+    <h2 class="text-white m-3">
+        What We Offer for You
+    </h2>
+    <br>
+    <div class="row m-0">
+        <div class="col-lg-3">
+            <div class="card bg-white p-2 rounded-0">
+                <div class="card-body">
+                    <div class="text-start">
+                        <h4 class="text-dark mt-0">General Dentist</h4>
+                    </div>
+                    <div class="text-start text-dark d-flex justify-content-between">
+                        <span>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="card bg-white p-2 rounded-0 shadow">
+                <div class="card-body">
+                    <div class="text-start">
+                        <h4 class="text-dark mt-0">Consultation</h4>
+                    </div>
+                    <div class="text-start text-dark d-flex justify-content-between">
+                        <span>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+         <div class="col-lg-3">
+            <div class="card bg-white p-2 rounded-0 shadow">
+                <div class="card-body">
+                    <div class="text-start">
+                        <h4 class="text-dark mt-0">Dental Implants</h4>
+                    </div>
+                    <div class="text-start text-dark d-flex justify-content-between">
+                        <span>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="card bg-white p-2 rounded-0 shadow">
+                <div class="card-body">
+                    <div class="text-start">
+                        <h4 class="text-dark mt-0">Dentistry</h4>
+                    </div>
+                    <div class="text-start text-dark d-flex justify-content-between">
+                        <span>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="border-top footer text-muted">
+    <div class="container">
+        <div class="row m-0">
+            <div class="col-lg-6">
+                <div class="card border-0 border-bottom border-3">
+                    <div class="card-body text-center">
+                        <h2>57</h2>
+                        <span>Sample text</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card border-0 border-bottom border-3">
+                    <div class="card-body text-center">
+                        <h2>1007</h2>
+                        <span>Sample text</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+            </div>
+            <div class="col-lg-4 mt-3">
+                <div class="card border-0 border-bottom border-3">
+                    <div class="card-body text-center">
+                        <h2>Our Location</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+            </div>
+        </div>
+        <br>
+        <div class="text-center">
+            <button class="btn btn-primary">BOOK APPOINTMENT</button>
+        </div>
+    </div>
+</footer>
