@@ -1,0 +1,137 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@{
+    var dentistservicesList = ViewData["DentistServicesList"] as List<Appointment.Models.DentistServicesModel>;
+}
+@{
+    var dentistscheduleList = ViewData["DentistScheduleList"] as List<Appointment.Models.DentistScheduleModel>;
+}
+
+
+@model DentistServicesModel
+
+@{
+    var userId = Context.Session.GetString("userId");
+    var userType = Context.Session.GetString("userType");
+}
+<style>
+    .service-card {
+        cursor: pointer;
+        transition: border-color 0.3s ease;
+    }
+
+        .service-card.selected {
+            border: 2px solid blue;
+        }
+</style>
+<div class="container-fluid p-0 m-0 ">
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-transparent mb-3">
+        <div class="container-fluid">
+            <div class="navbar-collapse collapse d-flex justify-content-end">
+                <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-transparent mb-3">
+                    <div class="container-fluid">
+                        <div class="navbar-collapse collapse d-flex justify-content-end">
+                            <div>
+                                <a class="btn btn-primary" href="/">HOME</a>
+                            </div>
+                            <div class="m-3">
+                                <a class="btn btn-primary" href="/Home/MedicalHistory">BOOK APPOINTMENT</a>
+                            </div>
+                            <div class="me-3">
+                                <a class="btn btn-primary" href="/Home/BookedAppointment">BOOKED APPOINTMENT</a>
+                            </div>
+                            <div class="me-3">
+                                <a class="btn btn-primary" href="/Home/Profile">PROFILE</a>
+                            </div>
+                            <div>
+                                <a class="btn btn-primary" href="@Url.Action("Logout", "Account")">LOGOUT</a>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <form asp-action="MedicalHistory" method="POST">
+            <div class="bg-white p-5">
+                <div class="form-group">
+                    <label>Do you have any ongoing medical conditions, such as diabetes, heart disease, or high blood pressure?</label><br />
+                    <small>(These conditions may impact oral health or influence treatment plans.)</small>
+                    <input type="text" name="qone" class="form-control" required />
+                </div>
+                <br />
+                <div class="form-group">
+                    <label>Are you currently taking any medications, including prescriptions, over-the-counter drugs, or supplements?</label><br />
+                    <small>(Certain medications can affect oral health, such as causing dry mouth or increasing bleeding risks.)</small>
+                    <input type="text" name="qtwo" class="form-control" required />
+                </div>
+                <br />
+                <div class="form-group">
+                    <label>Do you have any allergies, especially to medications, latex, or anesthetics?</label><br />
+                    <small>(This ensures patient safety during treatment.)</small>
+                    <input type="text" name="qthree" class="form-control" required />
+                </div>
+                <br/>
+                <div class="form-group">
+                    <label>Have you ever had any surgeries or hospitalizations? If yes, could you briefly explain?</label><br />
+                    <small>(This helps the dentist understand any past medical procedures that may impact dental care.)</small>
+                    <input type="text" name="qfour" class="form-control" required />
+                </div>
+                <br />
+                <div class="form-group">
+                    <label>Do you have a history of smoking, alcohol use, or recreational drug use?</label><br />
+                    <small>(These habits can significantly affect oral health and healing after procedures.)</small>
+                    <input type="text" name="qfive" class="form-control" required />
+                </div>
+                <br />
+                <div>
+                    <input type="checkbox" required /> <small class="text-primary agreement" style="cursor: pointer;">Agree with  the terms and conditions?</small>
+                </div>
+                <br />
+                <div class="text-end">
+                    <button type="submit" class="btn btn-block btn-primary btn-flat" style="color: #fff; border: unset;height: 45px;font-size: 23px;" name="save">Save</button>
+                </div>
+            </div>
+
+            
+        </form>
+    </div>
+</div>
+
+<div class="modal" id="agreementModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Agreement</h5>
+                <button type="button" class="deleteModal" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                "By providing the following information, I consent to the collection and use of my medical history by [Dental Clinic Name] for the purpose of providing safe and effective dental care. I understand that this information will remain confidential and will only be used in compliance with healthcare privacy regulations. I have the right to ask questions or decline to answer specific questions if I feel uncomfortable."
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary deleteModal" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+
+        $(document).ready(function () {
+
+        $('.agreement').click(function (e) {
+            e.preventDefault(); // Prevent default action (if any)
+            $('#agreementModal').modal('show');
+        });
+
+        $('.deleteModal').click(function () {
+            $('#agreementModal').modal('hide');
+        });
+    });
+
+</script>
