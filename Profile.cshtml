@@ -1,5 +1,5 @@
 ﻿@{
-    Layout = "_Layout";
+    ViewData["Title"] = "Home Page";
 }
 @{
     var profileList = ViewData["ProfileList"] as List<Appointment.Models.AccountModel>;
@@ -8,23 +8,44 @@
     var profileAccount = profileList?.FirstOrDefault(a => a.Id == userId);
 }
 
-
-<link rel="stylesheet" href="https://cdn.datatables.net/2.2.1/css/dataTables.bootstrap5.css" />
-<div class="wrapper">
-    @Html.Partial("~/Views/Shared/_Sidebar.cshtml")
-
-    <div class="container-fluid bg-light" style="height: 100vh;">
-
-
+<div class="container-fluid p-0 m-0 ">
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-transparent mb-3">
+        <div class="container-fluid">
+            <div class="navbar-collapse collapse d-flex justify-content-end">
+                <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-transparent mb-3">
+                    <div class="container-fluid">
+                        <div class="navbar-collapse collapse d-flex justify-content-end">
+                            <div>
+                                <a class="btn btn-primary" href="/">HOME</a>
+                            </div>
+                            <div class="m-3">
+                                <a class="btn btn-primary" href="/Home/MedicalHistory">BOOK APPOINTMENT</a>
+                            </div>
+                            <div class="me-3">
+                                <a class="btn btn-primary" href="/Home/BookedAppointment">BOOKED APPOINTMENT</a>
+                            </div>
+                            <div class="me-3">
+                                <a class="btn btn-primary" href="/Home/Profile">PROFILE</a>
+                            </div>
+                            <div>
+                                <a class="btn btn-primary" href="@Url.Action("Logout", "Account")">LOGOUT</a>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
         <form asp-action="Profile" method="POST">
-            
+
 
             <input type="hidden" name="id" id="Id" value="@profileAccount?.Id">
-            
+
             <div class="row">
-                <div class="col-lg-4">
+                <div class="col-lg-12">
                     <div class="row">
-                        <div class="col-lg-12 mt-3">
+                        <div class="col-lg-4 mt-3">
                             <div class="form-group has-feedback form-control" style="height: 45px;position: relative;">
                                 <input type="text" name="firstname" id="FirstName" value="@profileAccount?.FirstName" placeholder="First Name" style="width: 100%;height: 100%;border: unset;box-shadow: none;outline-style: none;" required>
 
@@ -32,13 +53,13 @@
                                 <span class="fa fa-user form-control-feedback" style="top: 50%;transform: translateY(-50%);position:absolute;right: 10px;"></span>
                             </div>
                         </div>
-                        <div class="col-lg-12 mt-3">
+                        <div class="col-lg-4 mt-3">
                             <div class="form-group has-feedback form-control" style="height: 45px;position: relative;">
                                 <input type="text" name="middlename" id="MiddleName" value="@profileAccount?.MiddleName" placeholder="Middle Name" style="width: 100%;height: 100%;border: unset;box-shadow: none;outline-style: none;" required>
                                 <span class="fa fa-user form-control-feedback" style="top: 50%;transform: translateY(-50%);position:absolute;right: 10px;"></span>
                             </div>
                         </div>
-                        <div class="col-lg-12 mt-3">
+                        <div class="col-lg-4 mt-3">
                             <div class="form-group has-feedback form-control" style="height: 45px;position: relative;">
                                 <input type="text" name="lastname" id="LastName" value="@profileAccount?.LastName" placeholder="Last Name" style="width: 100%;height: 100%;border: unset;box-shadow: none;outline-style: none;" required>
                                 <span class="fa fa-user form-control-feedback" style="top: 50%;transform: translateY(-50%);position:absolute;right: 10px;"></span>
@@ -61,8 +82,8 @@
             </div>
             <br>
             <div class="row">
-                <div class="col-xs-12">
-                    <button type="submit" class="btn btn-block btn-flat" style="background: #00bf63; color: #fff; border: unset;height: 45px;font-size: 23px;" name="register">Save</button>
+                <div class="col-xs-12 text-end">
+                    <button type="submit" class="btn btn-block btn-primary btn-flat" style="color: #fff; border: unset;height: 45px;font-size: 23px;" name="register">Save</button>
                 </div>
             </div>
         </form>
