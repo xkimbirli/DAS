@@ -1,0 +1,54 @@
+﻿@{
+    Layout = "_Layout";
+}
+<div class="login-box border p-3">
+    <div class="login-box-body" style="padding: 20px 30px;">
+      <div style="width: 100%;text-align: center;">
+        <img src="@Url.Content("~/images/logo.png")" width="100px" alt="Sample Image" />
+      </div> 
+      <div style="display: flex;justify-content: space-evenly;padding: 0px 50px;">
+        <h3 class="text-center" style="width: 100%;padding: 5px;"><a href="/Account/Login" class="text-decoration-none" style="color: #000;">Login</a></h3>
+        <h3 class="text-center" style="border-bottom: 3px solid green;width: 100%;padding: 5px;"><a class="text-decoration-none" style="color: #000;">Signup</a></h3>
+      </div>
+      <br>
+      <p class="login-box-msg">Sign in to start your session</p>
+      <br>
+      <form asp-action="Register" method="POST">
+          <div class="form-group has-feedback form-control" style="height: 45px;position: relative;">
+            <input type="text" name="firstname" id="FirstName" placeholder="First Name" style="width: 100%;height: 100%;border: unset;box-shadow: none;outline-style: none;" required>
+            <span class="fa fa-user form-control-feedback" style="top: 50%;transform: translateY(-50%);position:absolute;right: 10px;"></span>
+          </div>
+          <br>
+          <div class="form-group has-feedback form-control" style="height: 45px;position: relative;">
+            <input type="text" name="middlename" id="MiddleName" placeholder="Middle Name" style="width: 100%;height: 100%;border: unset;box-shadow: none;outline-style: none;" required>
+            <span class="fa fa-user form-control-feedback" style="top: 50%;transform: translateY(-50%);position:absolute;right: 10px;"></span>
+          </div>
+          <br>
+          <div class="form-group has-feedback form-control" style="height: 45px;position: relative;">
+            <input type="text" name="lastname" id="LastName" placeholder="Last Name" style="width: 100%;height: 100%;border: unset;box-shadow: none;outline-style: none;" required>
+            <span class="fa fa-user form-control-feedback" style="top: 50%;transform: translateY(-50%);position:absolute;right: 10px;"></span>
+          </div>
+          <br>
+          <div class="form-group has-feedback form-control" style="height: 45px;position: relative;">
+            <input type="email" name="email" id="Email" placeholder="Email" style="width: 100%;height: 100%;border: unset;box-shadow: none;outline-style: none;" required>
+            <span class="fa fa-at form-control-feedback" style="top: 50%;transform: translateY(-50%);position:absolute;right: 10px;"></span>
+          </div>
+          <br>
+          <div class="form-group has-feedback form-control" style="height: 45px;position: relative;">
+            <input type="password" name="password" id="Password" placeholder="******" style="width: 100%;height: 100%;border: unset;box-shadow: none;outline-style: none;" required>
+            @* <i class="fa fa-eye-slash toggle-password" style="top: 50%;transform: translateY(-50%);position:absolute;right: 10px;"></i> *@
+                <i class="fa fa-lock toggle-password" style="top: 50%;transform: translateY(-50%);position:absolute;right: 10px;"></i>
+          </div> <br>
+          <div class="row">
+          <div class="col-xs-12">
+                    <button type="submit" class="btn w-100 btn-block btn-primary btn-flat" style="color: #fff; border: unset;height: 45px;font-size: 23px;" name="register">Register</button>
+              </div>
+          </div>
+      </form>
+      <br>
+          @if (ViewData["Message"] != null)
+{
+    <p class="text-center" style="background:#6bc1693d;color:green;padding: 6px;">@ViewData["Message"]</p>
+}      <br>
+    </div>
+</div>
